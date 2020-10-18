@@ -2,19 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blazored.Modal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProjectHub.Areas.Identity;
 using ProjectHub.Data;
+using ProjectHub.Data.Services;
+using ProjectHub.Data.SqlDatabase;
+using Syncfusion.Blazor;
 
 namespace ProjectHub
 {
@@ -31,24 +30,26 @@ namespace ProjectHub
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-            services.AddSingleton<WeatherForecastService>();
+
+            services.AddTransient<ISqlDataAccess, SqlDataAccess>();
+            services.AddTransient<IGlossaryData, GlossaryData>();
+
+            services.AddBlazoredModal();
+
+            services.AddSyncfusionBlazor();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzM2OTQxQDMxMzgyZTMzMmUzMFpadDNIdllTdFNTbGsveElZWlp5bUtzMzJXak13VVpOZksyczFlYjBkWmM9");
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -61,9 +62,6 @@ namespace ProjectHub
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

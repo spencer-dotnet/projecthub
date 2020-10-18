@@ -1,0 +1,82 @@
+﻿@page "/glossary"
+@using ProjectHub.Data.Models
+@using ProjectHub.Data.SqlDatabase
+@using ProjectHub.Components.Modals
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs 
+@inject IGlossaryData db
+
+<h3>
+    Glossary
+
+    <SfButton Content="Add New Entry" OnClick="@(() => { Visibility = true; Type = "Add"; } )" IsPrimary="true" />
+</h3>
+@if (glossary == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><!--Blank--></th>
+                <th>Term</th>
+                <th>Definition</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in glossary)
+            {
+                <tr>
+                    <td nowrap>
+                        <span>
+                            <span class="oi oi-circle-x" @onclick="@(e => DeleteGlossaryItem(entry.Term))"></span>
+                            <span class="oi oi-pencil" @onclick="@(e => EditGlossaryItem(entry))"></span>
+                        </span>
+                    </td>
+                    <td nowrap>@entry.Term</td>
+                    <td>@entry.Definition</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+<SfDialog Width="335px" Target="#target" IsModal="true" @bind-Visible="Visibility" ShowCloseIcon="true">
+    <DialogTemplates>
+        <Header> @Type Glossary Item </Header>
+        <Content>
+            <EditForm Model="@newGlossaryItem" OnValidSubmit="@InsertGlossaryItem">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <SfTextBox CssClass="e-outline"
+                           Placeholder="Term"
+                           FloatLabelType="@FloatLabelType.Auto"
+                           @bind-Value="newGlossaryItem.Term"
+                           Readonly="@TermInputIsReadonly">
+                </SfTextBox>
+
+                <SfTextBox Multiline="true"
+                           CssClass="e-outline"
+                           Placeholder="Definition"
+                           FloatLabelType="@FloatLabelType.Auto"
+                           @bind-Value="newGlossaryItem.Definition">
+                </SfTextBox>
+
+                @if (Type == "Add")
+                {
+                    <SfButton Content="Add" type="submit" IsPrimary="true" />
+                }
+                else
+                {
+                    <SfButton Content = "Save" OnClick="@SaveChanges" IsPrimary = "true" />
+                }
+            </EditForm>
+        </Content>
+    </DialogTemplates>
+    <DialogEvents Closed="@(() => newGlossaryItem = new GlossaryItem())" OnOverlayClick="@(() => Visibility = false )"></DialogEvents>
+    <DialogAnimationSettings Effect="@DialogEffect.None"></DialogAnimationSettings>
+</SfDialog>

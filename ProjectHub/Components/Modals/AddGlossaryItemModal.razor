@@ -1,0 +1,43 @@
+﻿@using ProjectHub.Data.Models
+@inject ProjectHub.Data.SqlDatabase.IGlossaryData db
+
+
+
+<EditForm Model="@newGlossaryItem" OnValidSubmit="@InsertGlossaryItem">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>Term</label>
+    <InputText id="term" @bind-Value="newGlossaryItem.Term" /> <br />
+    <label>Definition</label>
+    <InputTextArea id="definition" @bind-Value="newGlossaryItem.Definition" />
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</EditForm>
+
+@code {
+
+    private GlossaryItem newGlossaryItem = new GlossaryItem();
+
+    private async void InsertGlossaryItem()
+    {
+        GlossaryItem item = new GlossaryItem
+        {
+            Term = newGlossaryItem.Term,
+            Definition = newGlossaryItem.Definition
+        };
+
+        var rowsChanged = await db.InsertGlossaryItem(newGlossaryItem);
+
+        //if (rowsChanged == 1)
+        //{
+        //    glossary.Add(item);
+        //}
+
+        // clear our form
+        newGlossaryItem = new GlossaryItem();
+
+        StateHasChanged();
+    }
+
+}

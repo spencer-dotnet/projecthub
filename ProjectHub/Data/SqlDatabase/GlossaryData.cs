@@ -47,5 +47,9 @@ namespace ProjectHub.Data.SqlDatabase
 
             return _db.SaveData(sql, term);
         }
+
+        //public Task<int> EditGlossaryItemByTerm(string term)
+        //{
+        //}
     }
 }

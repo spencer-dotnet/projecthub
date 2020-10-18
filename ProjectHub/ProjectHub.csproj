@@ -1,14 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>16406500-96ba-4622-b355-5340114b7527</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Blazored.Modal" Version="5.1.0" />
     <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="Npgsql" Version="4.1.5" />
     <PackageReference Include="Syncfusion.Blazor" Version="18.3.0.41" />
   </ItemGroup>
-
 </Project>

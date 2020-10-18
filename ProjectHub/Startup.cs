@@ -44,15 +44,19 @@ namespace ProjectHub
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzM2OTQxQDMxMzgyZTMzMmUzMFpadDNIdllTdFNTbGsveElZWlp5bUtzMzJXak13VVpOZksyczFlYjBkWmM9");
-            
+        {            
             if (env.IsDevelopment())
             {
+                string _syncfustionKey = Configuration["Syncfusion:licence_key"];
+                Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(_syncfustionKey);
+
+
                 app.UseDeveloperExceptionPage();
             }
             else
             {
+                Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Environment.GetEnvironmentVariable("SYNCFUSION_KEY"));
+
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();

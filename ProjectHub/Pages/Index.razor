@@ -1,17 +1,65 @@
 ﻿@page "/"
 
-@using ProjectHub.Components.Modals
+@using ProjectHub.Data.Models
+@using ProjectHub.Data.SqlDatabase 
+@inject IReferenceData _database
 
 
 <h1>Projects</h1>
+@*<button class="btn btn-primary" @onclick="AddReference">Add Reference</button>*@
 
-<button @onclick="ShowModal" class="btn btn-primary">Show Modal</button>
+@if(references == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Link</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var r in references)
+            {
+                <tr>
+                    <th>@r.Title</th>
+                    <th>@r.Description</th>
+                    <th>
+                        <a href="@r.Link" target="_blank">@r.Link</a>
+                    </th>
+                    <th>@r.Category</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 
 @code {
+    private List<Reference> references;
 
-    [CascadingParameter] public IModalService Modal { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        references = await _database.GetAllReferences();
+    }
 
-    void ShowModal() => Modal.Show<AddGlossaryItemModal>("Add New Glossary Entry");
+    private void AddReference()
+    {
+        Reference reference = new Reference()
+        {
+            Title = "test",
+            Description = "This is a test",
+            Link = "https://spencer-nelson.com",
+            Category = ReferenceCategory.Other
+        };
+
+        _database.InsertReference(reference);
+    }
+
 
 }

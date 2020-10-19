@@ -35,6 +35,7 @@ namespace ProjectHub
 
             services.AddTransient<ISqlDataAccess, SqlDataAccess>();
             services.AddTransient<IGlossaryData, GlossaryData>();
+            services.AddTransient<IReferenceData, ReferenceData>();
 
             services.AddBlazoredModal();
 

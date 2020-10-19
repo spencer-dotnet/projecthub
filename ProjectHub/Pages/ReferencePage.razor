@@ -1,0 +1,92 @@
+﻿@page "/reference"
+@using ProjectHub.Data.Models
+@using ProjectHub.Data.SqlDatabase
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.DropDowns
+
+
+<h3>
+    References
+    <SfButton Content="Add New Reference" OnClick="@(() => { Visibility = true; Type = "Add"; } )" IsPrimary="true" />
+</h3>
+
+@if (references == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Link</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in references)
+            {
+                <tr>
+                    <th>@r.Title</th>
+                    <th>@r.Description</th>
+                    <th>
+                        <a href="@r.Link" target="_blank">@r.Link</a>
+                    </th>
+                    <th>@r.Category</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<SfDialog Width="335px" Target="#target" IsModal="true" @bind-Visible="Visibility" ShowCloseIcon="true">
+    <DialogTemplates>
+        <Header> @Type Reference </Header>
+        <Content>
+            <EditForm Model="@newReference" OnValidSubmit="@AddReference">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <SfTextBox CssClass="e-outline"
+                           Placeholder="Title"
+                           FloatLabelType="@FloatLabelType.Auto"
+                           @bind-Value="@newReference.Title">
+                </SfTextBox>
+
+                <SfTextBox CssClass="e-outline"
+                           Placeholder="Link"
+                           FloatLabelType="@FloatLabelType.Auto"
+                           @bind-Value="@newReference.Link">
+                </SfTextBox>
+
+                <SfTextBox Multiline="true"
+                           CssClass="e-outline"
+                           Placeholder="Description"
+                           FloatLabelType="@FloatLabelType.Auto"
+                           @bind-Value="newReference.Description">
+                </SfTextBox>
+
+                <SfDropDownList TValue="ReferenceCategory"
+                                TItem="string"
+                                PopupHeight="350px"
+                                PopupWidth="350px"
+                                Placeholder="Select a Category"
+                                DataSource="@CategoryValues"
+                                @bind-Value="@newReference.Category">
+                </SfDropDownList>
+
+                @if (Type == "Add")
+                {
+                    <SfButton Content="Add" type="submit" IsPrimary="true" />
+                }
+
+            </EditForm>
+        </Content>
+    </DialogTemplates>
+    <DialogEvents Closed="@(() => newReference = new Reference())" OnOverlayClick="@(() => Visibility=false )"></DialogEvents>
+    <DialogAnimationSettings Effect="@DialogEffect.None"></DialogAnimationSettings>
+</SfDialog>

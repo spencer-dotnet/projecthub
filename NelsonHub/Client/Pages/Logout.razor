@@ -1,0 +1,12 @@
+@page "/logout"
+@using NelsonHub.Client.Services
+@inject IAuthService AuthenticationService
+@inject NavigationManager NavigationManager
+
+@code {
+    protected override async void OnInitialized()
+    {
+        await AuthenticationService.Logout();
+        NavigationManager.NavigateTo("/");
+    }
+}

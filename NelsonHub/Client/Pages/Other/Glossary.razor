@@ -1,0 +1,84 @@
+@page "/glossary"
+
+@attribute [Authorize]
+
+<h3>
+    Glossary
+    <button class="btn btn-primary" @onclick="() => modal.Open()">Add</button>
+</h3>
+@if (glossary == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><!--Blank--></th>
+                <th>Term</th>
+                <th>Definition</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in glossary)
+            {
+                <tr>
+                    <td nowrap>
+                        <span>
+                            <span class="oi oi-circle-x" @onclick="@(e => DeleteGlossaryItem(entry))"></span>
+                            <span class="oi oi-pencil" @onclick="@(e => OpenEditModal(entry))"></span>
+                        </span>
+                    </td>
+                    <td nowrap>@entry.Term</td>
+                    <td>@entry.Definition</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+<!-- Add Entry Modal -->
+<Modal @ref="modal">
+    <Title>Add New Glossary Entry</Title>
+    <Body>
+        <EditForm Model="@newGlossaryItem" OnValidSubmit="@InsertGlossaryItem">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Term" @bind-value="newGlossaryItem.Term" />
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" placeholder="Definition" @bind="newGlossaryItem.Definition" />
+            </div>
+
+            <button  class="btn btn-primary" type="submit">Add</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => modal.Close()">Close</button>
+
+        </EditForm>
+    </Body>
+</Modal>
+
+<!--Edit Entry Modal-->
+<Modal @ref="editModal">
+    <Title>Edit @newGlossaryItem.Term</Title>
+    <Body>
+        <EditForm Model="@newGlossaryItem" OnValidSubmit="@EditGlossaryItem">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Term" @bind-value="newGlossaryItem.Term" />
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" placeholder="Definition" @bind="newGlossaryItem.Definition" />
+            </div>
+
+            <button class="btn btn-primary" type="submit">Save</button>
+            <button type="button" class="btn btn-secondary"  @onclick="() => editModal.Close()">Close</button>
+
+        </EditForm>
+    </Body>
+</Modal>

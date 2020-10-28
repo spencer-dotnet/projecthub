@@ -1,0 +1,20 @@
+@page "/"
+
+@inject IUserService UserService
+
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name!
+    </Authorized>
+    <NotAuthorized>
+        <p>Hello Stranger!</p>
+        <p>
+            <a href="Register">Register</a>
+            <a href="Login">Log in</a>
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+}

@@ -1,0 +1,54 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <a class="navbar-brand" href="/">Spencer Nelson</a>
+
+    <button class="navbar-toggler" type="button"
+            data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            @* Projects *@
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Projects <span class="sr-only">(current)</span></a>
+            </li>
+
+            @* Authorized *@
+            <AuthorizeView>
+                <Authorized>
+                    @* Dashboard *@
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+
+                    @*Other Dropdown*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Other
+                        </a>
+                        <div class="dropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/glossary">Glossary</a>
+                                <a class="dropdown-item" href="/reference">Reference</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </li>
+                </Authorized>
+            </AuthorizeView>
+        </ul>
+
+
+        @*Login / Out*@
+        <span class="navbar-text">
+            <LoginDisplay />
+        </span>
+
+    </div>
+
+</nav>

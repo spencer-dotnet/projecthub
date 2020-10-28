@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using ProjectHub.Data.Models;
 using ProjectHub.Data.SqlDatabase;
 using System;

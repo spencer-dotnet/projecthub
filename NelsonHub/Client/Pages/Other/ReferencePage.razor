@@ -1,0 +1,79 @@
+@page "/reference"
+
+@attribute [Authorize]
+
+
+<h3>
+    References
+    <button class="btn btn-primary" @onclick="() => modal.Open()">Add Reference</button>
+</h3>
+
+@if (references == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Link</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in references)
+            {
+                <tr>
+                    <th>@r.Title</th>
+                    <th>@r.Description</th>
+                    <th>
+                        <a href="@r.Link" target="_blank">@r.Link</a>
+                    </th>
+                    <th>@r.Category</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!--Add Refernece Modal-->
+<Modal @ref="modal">
+    <Title>Add New Reference</Title>
+    <Body>
+        <EditForm Model="@newReference" OnValidSubmit="@AddReference">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="titleText">Title</label>
+                <input id="titleText" class="form-control" type="text" placeholder="Title" @bind-value="newReference.Title" />
+            </div>
+
+            <div class="form-group">
+                <label for="linkText">Link</label>
+                <input id="linkText" class="form-control" type="text" placeholder="Https://" @bind-value="newReference.Link" />
+            </div>
+
+            <div class="form-group">
+                <label for="descriptionText">Description</label>
+                <textarea id="descriptionText" class="form-control" @bind="newReference.Description" />
+            </div>
+
+            <div class="form-group">
+                <label for="categoryDropdown">Category</label>
+                <select id="categoryDropdown">
+                    @foreach(var category in CategoryValues)
+                    {
+                        <option>@category</option>
+                    }
+                </select>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Submit</button>
+
+        </EditForm>
+    </Body>
+</Modal>

@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using NelsonHub.Shared.DAL;
 using NelsonHub.Server.Services;
+using System;
 
 namespace NelsonHub.Server
 {
@@ -46,9 +47,9 @@ namespace NelsonHub.Server
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["JwtIssuer"],
-                        ValidAudience = Configuration["JwtAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]))
+                        ValidIssuer = Environment.GetEnvironmentVariable("JwtIssuer"),
+                        ValidAudience = Environment.GetEnvironmentVariable("JwtAudience"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JwtSecurityKey")))
                     };
                 });
         }

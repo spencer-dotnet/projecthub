@@ -21,7 +21,6 @@
       "launchBrowser": true,
       "environmentVariables": {
         "JwtAudience": "https://localhost",
-        "SYNCFUSION_KEY": "MzM2OTQxQDMxMzgyZTMzMmUzMFpadDNIdllTdFNTbGsveElZWlp5bUtzMzJXak13VVpOZksyczFlYjBkWmM9",
         "JwtIssuer": "https://localhost",
         "JwtSecurityKey": "RANDOM_KEY_MUST_NOT_BE_SHARED",
         "ASPNETCORE_ENVIRONMENT": "Development"
